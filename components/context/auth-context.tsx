@@ -1,7 +1,9 @@
-import React from 'react';
+import { clearSessionFromStorage, loadSessionFromStorage, saveSessionToStorage } from '@/uitls/storage';
+import { router } from 'expo-router';
+import React, { useEffect } from 'react';
 
 
-interface User {
+export interface User {
     id: string;
     name: string;
 }
@@ -22,11 +24,27 @@ const AuthContext = React.createContext<AuthContextProps | undefined>(undefined)
 export default function AuthProvider({children}: {children: React.ReactNode}) {
     const [user, setUser] = React.useState<User | null>(null);
 
+    useEffect(() => {
+        loadSessionFromStorage()
+            .then((loadedUser) => {
+                if (loadedUser) {
+                    setUser(loadedUser);
+                }
+            });
+    }, []);
+
+    useEffect(() => {
+        if (user){
+            router.replace("/(tabs)");
+        }
+    }, [user]);
+
     const login = (username: string, password: string) => {
         const foundUser = EXPECTED_USERS.find(u => u.name === username && u.password === password);
 
         if (foundUser) {
             setUser({id: foundUser.id, name: foundUser.name});
+            saveSessionToStorage({id: foundUser.id, name: foundUser.name});
         } else {
         throw new Error("Login failed: Invalid username or password.");    
         }
@@ -34,6 +52,7 @@ export default function AuthProvider({children}: {children: React.ReactNode}) {
 
     const logout = () => {
         setUser(null);
+        clearSessionFromStorage();
     }
 
     return (

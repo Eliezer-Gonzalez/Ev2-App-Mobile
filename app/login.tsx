@@ -1,12 +1,10 @@
-import {View, Text, StyleSheet, TextInput, Pressable, Alert} from 'react-native';
 import { useState } from 'react';
-import { useRouter } from 'expo-router';
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAuth } from '../components/context/auth-context';
 
 export default function LoginScreen() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const router = useRouter();
     const { login} = useAuth();
     
     const handelUsernameChange = (text: string) => {
@@ -20,7 +18,6 @@ export default function LoginScreen() {
     const handelLogin = () => {
         try {
             login(username, password);
-            router.replace("/(tabs)");
         } catch (error) {
             Alert.alert("Login Failed", (error as Error).message);
         }

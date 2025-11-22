@@ -1,5 +1,5 @@
 import { Task } from "@/constants/types";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IconSymbol } from "./ui/icon-symbol";
 
 interface TaskItemProps {
@@ -13,9 +13,27 @@ export default function TaskItem({ task, onToggle, onRemove }: TaskItemProps) {
             <TouchableOpacity 
             style={[styles.circle, task.completed && styles.completedCircle]} 
             onPress={() => onToggle(task.id)}/>
-            <Text style={[styles.title, task.completed && styles.completedTitle]}>
-                {task.title}
-            </Text>
+            <View>
+                {task.photoUri && (
+                <Image
+                source={{uri: task.photoUri}}
+                style={{width: 50, height: 50, borderRadius: 5, marginRight: 10}}
+                resizeMode="cover"
+                />
+                )}
+            </View>
+                    
+            <View>
+                <Text style={[styles.title, task.completed && styles.completedTitle]}>
+                    {task.title}
+                </Text>
+                {task.coordinates && (
+                    <Text style={{ fontSize: 12, color: '#555', }}>
+                        📍 Lat: {task.coordinates.latitude}, Lon: {task.coordinates.longitude}
+                    </Text>
+                )}
+            </View>
+
             <TouchableOpacity onPress={() => onRemove(task.id)} style={styles.removeButton}>
                 <IconSymbol name="trash.circle" size={24} color="#ff0000"/>
             </TouchableOpacity>
