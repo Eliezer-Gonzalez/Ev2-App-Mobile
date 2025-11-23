@@ -24,15 +24,19 @@ useEffect(() => {
 }, [user]); 
 
   const toggleTodo = (id: string) => {
-    setTodos(prevTodos =>
-      prevTodos.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      ) 
-    );
+    setTodos(prevTodos => {
+      const updated = prevTodos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo);
+      saveTodosToStorage(updated);
+      return updated;
+    });
   }
 
   const removeTodo = (id: string) => {
-    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+    setTodos(prevTodos => {
+      const updated = prevTodos.filter(todo => todo.id !== id);
+      saveTodosToStorage(updated);
+      return updated;
+    });
   }
 
   const createTask = (task: Task) => {

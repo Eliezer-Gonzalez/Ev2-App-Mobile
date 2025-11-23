@@ -15,7 +15,7 @@ interface AuthContextProps {
 }
 
 const EXPECTED_USERS = [
-    { id: "1", name: "User1234", password: "Pass1234"},
+    { id: "1", name: "User", password: "User"},
     { id: "2", name: "Admin", password: "Admin" },
 ]
 
