@@ -63,3 +63,10 @@ Esta es la segunda entrega del proyecto de Desarrollo Móvil (continuación de l
 - Eliminar una tarea: al eliminarla, cerrar sesión y volver a iniciar sesión, asi como cerrar y abrir la app, mantiene la lista actualizada (las tareas eliminadas no reaparecerán).
 
 ---
+
+## Utilización de la IA
+
+-Se utilizó para solucionar problemas con el Blur del `LOGIN`.
+-Se ulitizó para investigar librerías compatibles con EXPO. EJ: `expo-linear-gradient`.
+-Se utilizó para solucionar problema con el `Node_Modules`.
+-Se utilizó para completaciones de Código (Revisamos y aprobamos manualmente todos los cambios antes de aplicarlos.)
