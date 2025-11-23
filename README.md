@@ -40,7 +40,6 @@ Esta es la segunda entrega del proyecto de Desarrollo Móvil (continuación de l
 	- Si el usuario sólo escribe un título y no toma foto, la app no solicita coordenadas.
 
 - UX del formulario (`NewTask`):
-	- Evité un bug de re-render infinito moviendo lógica de `setState` dentro de handlers (ej. `handleSaveTask`) en lugar de ejecutarla durante render.
 	- Los botones de acción (Agregar / Cancelar) están posicionados en el pie de la pantalla. Se anclan para permanecer en la misma posición incluso cuando aparece el teclado.
 
 - `task-item` mejorado:
@@ -66,7 +65,7 @@ Esta es la segunda entrega del proyecto de Desarrollo Móvil (continuación de l
 
 ## Utilización de la IA
 
--Se utilizó para solucionar problemas con el Blur del `LOGIN`.
--Se ulitizó para investigar librerías compatibles con EXPO. EJ: `expo-linear-gradient`.
--Se utilizó para solucionar problema con el `Node_Modules`.
--Se utilizó para completaciones de Código (Revisamos y aprobamos manualmente todos los cambios antes de aplicarlos.)
+- Se utilizó para solucionar problemas con el Blur del `LOGIN`.
+- Se ulitizó para investigar librerías compatibles con EXPO. EJ: `expo-linear-gradient`.
+- Se utilizó para solucionar problema con el `Node_Modules`.
+- Se utilizó para completaciones de Código (Revisamos y aprobamos manualmente todos los cambios antes de aplicarlos.)
