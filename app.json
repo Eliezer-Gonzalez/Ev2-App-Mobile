@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Ev1-DesarrolloMobil",
-    "slug": "Ev1-DesarrolloMobil",
+    "name": "Ev2-DesarrolloMobil",
+    "slug": "Ev2-DesarrolloMobil",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "ev1desarrollomobil",
+    "scheme": "ev2desarrollomobil",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -23,6 +23,7 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
+      "softwareKeyboardLayoutMode": "pan",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },

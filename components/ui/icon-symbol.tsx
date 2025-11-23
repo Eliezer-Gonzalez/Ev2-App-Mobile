@@ -21,6 +21,7 @@ const MAPPING = {
   'person.fill': 'person',
   'trash.circle': 'delete',
   'plus': 'add',
+
 } as IconMapping;
 
 /**

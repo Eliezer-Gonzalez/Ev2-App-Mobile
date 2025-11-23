@@ -5,8 +5,9 @@ import NewTask from '@/components/ui/new-task';
 import Title from '@/components/ui/title';
 import { Task } from '@/constants/types';
 import { loadTodosFromStorage, saveTodosToStorage } from '@/uitls/storage';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
@@ -57,7 +58,17 @@ useEffect(() => {
   }
   return (
     <SafeAreaView style={styles.container}>
-        <Title>Todo List</Title>
+      <Title style={{alignSelf: 'center' , marginBottom: 15}}>Bienvenido a tu Todo List, <Text style={{fontWeight: 'bold', color: '#1bf03eff' }}>{user?.name}</Text></Title>
+    <LinearGradient
+      colors={['transparent', '#0dcc2dff', 'transparent']}
+      locations={[0, 0.5 , 1]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      style={{
+        height: 2.5, // Grosor del borde,
+      }}
+    />
+      <View style={styles.listBackground}>
       {userTodos.map((todo) => (
         <TaskItem 
           key={todo.id} 
@@ -66,27 +77,37 @@ useEffect(() => {
           onRemove={removeTodo}
         />
       ))}
+      </View>
       <TouchableOpacity style={styles.newTaskButton} onPress={() => setCreatingNew(true)}>
         <IconSymbol name="plus" size={30} weight="bold" color="#fff" />
       </TouchableOpacity>
+
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 15,
     flex: 1,
+    backgroundColor: '#000000ff',
   },
   newTaskButton: {
     position: 'absolute',
     bottom: 30,
     right: 30,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#0dcc2dff',
     width: 60,
     height: 60,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  listBackground: {
+    flex: 1,
+    backgroundColor: '#000000ff',
+    marginHorizontal: -22,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
 });

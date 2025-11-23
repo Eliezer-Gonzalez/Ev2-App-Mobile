@@ -39,24 +39,24 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     primary: {
-        backgroundColor: '#007bff',
+        backgroundColor: '#0dcc2dc2',
     },
     outlined: {
         backgroundColor: 'transparent',
         borderWidth: 2,
-        borderColor: '#007bff',
+        borderColor: '#0dcc2dff',
     },
     success: {
         backgroundColor: '#28a745',
     },
     danger: {
-        backgroundColor: '#dc3545',
+        backgroundColor: '#cf0c20ff',
     },
     warning: {
         backgroundColor: '#ffc107',
     },
     buttonTextOutline: {
-        color: '#007bff',
+        color: '#0dcc2dff',
     },
     disabled: {
         opacity: 0.6,

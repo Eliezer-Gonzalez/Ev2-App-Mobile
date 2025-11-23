@@ -15,11 +15,14 @@ export default function TaskItem({ task, onToggle, onRemove }: TaskItemProps) {
             onPress={() => onToggle(task.id)}/>
             <View>
                 {task.photoUri && (
-                <Image
-                source={{uri: task.photoUri}}
-                style={{width: 50, height: 50, borderRadius: 5, marginRight: 10}}
-                resizeMode="cover"
-                />
+                <View style={styles.imageWrapper}>
+                    <Image
+                        source={{uri: task.photoUri}}
+                        style={[styles.image, task.completed && styles.completedImage]}
+                        resizeMode="cover"
+                    />
+                    {task.completed && <View style={styles.imageOverlay} pointerEvents="none" />}
+                </View>
                 )}
             </View>
                     
@@ -28,14 +31,13 @@ export default function TaskItem({ task, onToggle, onRemove }: TaskItemProps) {
                     {task.title}
                 </Text>
                 {task.coordinates && (
-                    <Text style={{ fontSize: 12, color: '#555', }}>
+                    <Text style={{ fontSize: 12, color: '#ffffffff', }}>
                         📍 Lat: {task.coordinates.latitude}, Lon: {task.coordinates.longitude}
                     </Text>
                 )}
             </View>
-
             <TouchableOpacity onPress={() => onRemove(task.id)} style={styles.removeButton}>
-                <IconSymbol name="trash.circle" size={24} color="#ff0000"/>
+                <IconSymbol name="trash.circle" size={25} color="#e62828ff"/>
             </TouchableOpacity>
         </View>
     )
@@ -46,9 +48,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 10,
-        borderBottomColor: '#ccc',
+        borderBottomColor: '#cbcbcc',
         borderBottomWidth: 1,
         paddingBottom: 8,
+        height: 60,
     },
     circle: {
         width: 20,
@@ -56,19 +59,39 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginRight: 10,
         borderWidth: 1,
-        borderColor: '#000',
+        borderColor: '#ffffffff',
         backgroundColor: 'transparent',
     },
     completedCircle: {
-        backgroundColor: '#2bff00ff',
+        backgroundColor: '#0dcc2dff',
     },
     title: {
         fontSize: 18,
-        color: '#000000',
+        color: '#0dcc2dff',
     },
     completedTitle: {
         textDecorationLine: 'line-through',
-        color: '#808080',
+        color: '#cbcbcc',
+    },
+    imageWrapper: {
+        width: 50,
+        height: 50,
+        marginRight: 10,
+        borderRadius: 5,
+        overflow: 'hidden',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
+    },
+    completedImage: {
+        opacity: 0.4,
+    },
+    imageOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(255, 255, 255, 0.57)',
     },
     removeButton: {
         marginLeft: 'auto',
