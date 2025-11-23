@@ -1,10 +1,11 @@
-import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
+import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 
 interface ButtonProps {
     type?: 'primary' | 'outlined' | 'success' | 'danger' | 'warning';
     text: string;
     onPress?: () => void;
     style?: StyleProp<ViewStyle>;
+    textStyle?: StyleProp<TextStyle>;
     disabled?: boolean;
     loading?: boolean;
 }
@@ -14,12 +15,13 @@ export default function Button ({
     text,
     onPress,
     style,
+        textStyle,
     disabled = false,
     loading = false,
 }: ButtonProps ) {
     return (
         <TouchableOpacity style={[styles.button, styles[type], style, (disabled  || loading) && styles.disabled]} onPress={onPress} disabled={disabled || loading} >
-            <Text style={[styles.buttonText, type === 'outlined' && styles.buttonTextOutline]}> {loading ? "Cargando..." : text}
+            <Text style={[styles.buttonText, type === 'outlined' && styles.buttonTextOutline, textStyle]}> {loading ? "Cargando..." : text}
             </Text>
         </TouchableOpacity>
     )

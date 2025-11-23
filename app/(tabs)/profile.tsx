@@ -1,6 +1,9 @@
 import { useAuth } from "@/components/context/auth-context";
+import Button from "@/components/ui/button";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text, View, } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function HomeScreen() {
@@ -11,71 +14,41 @@ export default function HomeScreen() {
     router.replace("/login");
   }
   return (
-    <View style={styles.container}>
-        <View style={styles.purpleCircle}> 
-          <Text style={styles.titleName}> This your Profile {user?.name}!</Text>
-        </View>
+    <SafeAreaView style={styles.container}>
 
-        <Text style={styles.title}> Under Construction</Text>
-
-        <View style={styles.body}>
-            {/* Logout */}
-            <Pressable style={styles.button} onPress={handelLogaut}>
-              <Text style={styles.buttonText}>Logout</Text>
-            </Pressable>
-        </View>
-    </View>
-  );
+        <Text style={styles.title}> Perfil de: <Text style={{color: '#0dcc2dff', fontWeight: 'bold'}}>{user?.name}</Text></Text>
+        <LinearGradient
+          colors={['transparent', '#0dcc2dff', 'transparent']}
+          locations={[0, 0.5 , 1]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{
+            height: 2.5, // Grosor del borde,
+          }}/>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
+        <Text style={{color: '#ffffff', fontSize: 30}}> En construcción... </Text>
+      </View>
+      {/* Logout */}
+      <Button type="primary" text="LOGOUT" onPress={handelLogaut} style={styles.button} textStyle={{ fontSize: 16 }} />
+    </SafeAreaView>
+  ); 
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#000000ff',
+    flex: 1,
   },
-    purpleCircle: {
-      position: 'relative',
-      top: -30, 
-      width: 500,
-      height: 300,
-      backgroundColor: '#7513a3',
-      borderBottomLeftRadius: 250,
-      borderBottomRightRadius: 250,
-      zIndex: -1, 
-  },
-  titleName:{
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: "#ffffffff",
-    top: 170,
-    textAlign: 'center',
-  },
-  body:{
-    width: '80%',
-    alignContent: 'center',
-    gap: 10,
+  title:{
+    color: '#ffffff',
+    fontSize: 20,
+    alignSelf: 'center',
+    marginVertical: 15,
   },
   button: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 15,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 20,
-    color: '#9320afff',
-  },
-  textCount: {
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 'bold',
+    width: '90%',
+    alignSelf: 'center',
+    paddingVertical: 15,
   }
 });
