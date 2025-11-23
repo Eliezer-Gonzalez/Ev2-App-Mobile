@@ -1,65 +1,65 @@
 # Proyecto: Ev2 - Desarrollo Móvil
 
-Esta es la segunda entrega del proyecto de Desarrollo Móvil (continuación de la EV1). La aplicación es una pequeña lista de tareas desarrollada con Expo y React Native, pensada para practicar navegación con `expo-router`, componentes reutilizables y manejo de medios (cámara). El objetivo principal es un prototipo funcional que permita crear, listar, completar y eliminar tareas, además de adjuntar una foto a cada tarea.
+Esta es la segunda entrega del proyecto de Desarrollo Móvil (continuación de la EV1). La aplicación es una lista simple de tareas construida con Expo y React-Native pensada para practicar rutas con `expo-router`, manejo de estado local, cámara y permisos, y persistencia básica en `AsyncStorage`.
 
 **Autores:** Eliezer Gonzalez, Grecia Vidal
 
---
+---
 
-**Resumen rápido**
+## Resumen rápido
 - **Stack:** Expo, React Native, TypeScript
-- **Entradas principales:** `app/` (rutas), `components/` (componentes reutilizables), `components/ui/` (UI primitives), `assets/` (imágenes), `constants/`, `utils/`.
+- **Carpeta principal:** `app/` (rutas + pantallas)
+- **Componentes UI:** `components/` y `components/ui/`
+- **Persistencia local:** `uitls/storage.ts` (AsyncStorage)
 
---
+---
 
-**Qué hay en este repositorio**
+## Estructura y archivos importantes
 
-- `app/` — Rutas de la aplicación usando `expo-router`. Aquí están las pantallas principales y la estructura de navegación en pestañas (`(tabs)`):
-	- `app/(tabs)/index.tsx`: pantalla principal con la lista de tareas (Todo List). Implementa la lógica local de estados para los `todos`, botones para crear nuevas tareas y la integración con `TaskItem`.
-	- `app/login.tsx`, otros archivos de rutas y layouts para navegación (si están presentes en la rama).
+- `app/` — Rutas de la app usando `expo-router`:
+	- `app/(tabs)/index.tsx`: pantalla principal con la lista de tareas. Aquí se cargan los todos desde almacenamiento y se persisten los cambios (crear, eliminar, marcar).
+	- `app/login.tsx`: pantalla de login (ahora envuelta con `BlurView` para mejorar apariencia).
+	- `app/(tabs)/profile.tsx`: pantalla de perfil con ejemplo de uso del `Button`.
 
 - `components/` — Componentes reutilizables:
-	- `task-item.tsx`: componente que renderiza cada tarea, maneja el toggle de completado y la eliminación. Recibe props: `task`, `onToggle`, `onRemove`.
-	- `external-link.tsx`: helper para abrir enlaces externos.
-	- `haptic-tab.tsx`: utilidad para efectos hápticos en la UI.
-	- `context/auth-context.tsx`: contexto simple para autenticación (si está implementado).
+	- `task-item.tsx`: renderiza cada tarea; soporta título, imagen, coordenadas y eliminación. Al marcar como completada el título se tacha y la imagen se atenúa.
+	- `context/auth-context.tsx`: contexto para login/logout (sesión guardada en AsyncStorage).
 
-- `components/ui/` — Componentes de interfaz y formularios:
-	- `title.tsx`: componente que renderiza títulos de sección.
-	- `icon-symbol.tsx` / `icon-symbol.ios.tsx`: wrapper para iconos que unifica estilos por plataforma.
-	- `collapsible.tsx`: componente para secciones colapsables.
-	- `new-task.tsx`: formulario para crear una nueva tarea. Incluye manejo de cámara con `expo-image-picker` y campos para título y foto. Contiene validaciones básicas y evita re-render loops.
-	- `button.tsx`: botón estilizado (variant `primary`, `outlined`, `danger`).
+- `components/ui/` — Componentes de UI y formularios:
+	- `new-task.tsx`: formulario para crear tareas. Maneja cámara (`expo-image-picker`), obtiene coordenadas opcionales (`expo-location`) sólo cuando hay foto, muestra coordenadas bajo la imagen y evita re-render loops.
+	- `button.tsx`: botón reutilizable que acepta `style` (para el contenedor) y `textStyle` (para personalizar el texto, p. ej. `fontSize`).
+	- `title.tsx`, `icon-symbol.*`, `collapsible.tsx`, etc.
 
-- `constants/` — Constantes y tipos:
-	- `types.ts`: tipo `Task` y otros tipos globales.
-	- `theme.ts`: paleta y tokens de diseño.
+- `uitls/storage.ts` — Lectura/escritura de `todos` y `session` usando `@react-native-async-storage/async-storage`.
 
-- `uitls/` — Utilidades (nota: `uitls` contiene un typo intencional en el nombre de la carpeta en este repo):
-	- `generate-random-id.ts`: función para generar identificadores únicos para tareas.
+---
 
-- `assets/` — Imágenes y recursos estáticos.
+## Últimas implementaciones relevantes
 
---
+- Fotos y coordenadas:
+	- Si el usuario sólo escribe un título y no toma foto, la app no solicita coordenadas.
 
-**Comportamiento y flujos importantes**
+- UX del formulario (`NewTask`):
+	- Evité un bug de re-render infinito moviendo lógica de `setState` dentro de handlers (ej. `handleSaveTask`) en lugar de ejecutarla durante render.
+	- Los botones de acción (Agregar / Cancelar) están posicionados en el pie de la pantalla. Se anclan para permanecer en la misma posición incluso cuando aparece el teclado.
 
-- Lista de tareas (pantalla principal `app/(tabs)/index.tsx`):
-	- Mantiene el estado local `todos: Task[]` con algunos ejemplos iniciales.
-	- `toggleTodo(id)` cambia la propiedad `completed` de una tarea.
-	- `removeTodo(id)` elimina una tarea del arreglo.
-	- `addTodo(title)` crea una nueva tarea con `generateRandomId()` y la añade al arreglo.
-	- Al crear una nueva tarea se muestra un formulario (`NewTask`) que permite tomar una foto y guardar la tarea.
+- `task-item` mejorado:
+	- Si la tarea tiene imagen, la imagen se atenúa (menor opacidad) y se superpone una capa gris ligera para indicar estado "completado".
 
-- Crear/guardar tarea (`components/ui/new-task.tsx`):
-	- Usa `expo-image-picker` para solicitar permisos y abrir la cámara (`requestCameraPermissionsAsync` y `launchCameraAsync`).
-	- Guarda un `photoUri` en el estado cuando se captura una imagen.
-	- Protege contra re-render loops usando banderas de estado (`isCapturingPhoto`, `isSaving`) y asegurándose de ejecutar todas las llamadas a `setState` dentro de funciones de evento, no durante el render.
+- `login` con Blur:
+	- `app/login.tsx` ahora usa `BlurView` (expo-blur) para mejorar la estética del formulario sobre el fondo.
 
---
+- `Button` mejorado:
+	- El componente `Button` acepta ahora `textStyle` para poder cambiar el tamaño del texto y otras propiedades de tipografía desde cada uso.
 
-**Notas de mantenimiento y errores arreglados**
+-  `UX remodelado`:
+	- Se rediseño completamente toda la interfaz de la APP. (Se espera en un futuro mejorarla más.)
 
-- Se corrigió un error de sintaxis en `app/(tabs)/index.tsx` (una llave extra que provocaba pantalla en blanco). 
-- Se resolvió un problema de re-render infinito en `components/ui/new-task.tsx` causado por código que ejecutaba `setState` fuera de una función de evento; la lógica de guardado fue movida dentro de `handleSaveTask`.
-- Se añadió `expo-module-scripts` como dependencia de desarrollo para poder extender su `tsconfig.base` desde `tsconfig.json`.
+---
+## Pruebas y comprobaciones rápidas
+
+- Crear una tarea con foto: toma una foto, acepta permisos de ubicación si se solicitan, guarda la tarea. La tarea guardada debe incluir `photoUri` y `coordinates` (si se pudo obtener).
+- Crear una tarea sin foto: escribe el título y guarda; la tarea no debe solicitar permisos de ubicación ni incluir coordenadas.
+- Eliminar una tarea: al eliminarla, cerrar sesión y volver a iniciar sesión, asi como cerrar y abrir la app, mantiene la lista actualizada (las tareas eliminadas no reaparecerán).
+
+---
