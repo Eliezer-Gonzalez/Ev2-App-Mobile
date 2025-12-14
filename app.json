@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Ev2-DesarrolloMobil",
-    "slug": "Ev2-DesarrolloMobil",
+    "name": "Ev3-DesarrolloMobil",
+    "slug": "Ev3-DesarrolloMobil",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "ev2desarrollomobil",
+    "scheme": "ev3desarrollomobil",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

@@ -6,31 +6,36 @@ import { useState } from "react";
 import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { useAuth } from "../components/context/auth-context";
 import Button from "../components/ui/button";
+import getAuthService from "../services/auth-services";
 
-export default function LoginScreen() {
-  const [username, setUsername] = useState("");
+export default function RegisterScreen() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loading } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const router = useRouter();
 
-  const handelUsernameChange = (text: string) => {
-    setUsername(text);
-  };
+  const handleRegister = async () => {
+    if (!email || !password) {
+      Alert.alert("Datos incompletos", "Ingrese email y contraseña.");
+      return;
+    }
 
-  const handelPasswordChange = (text: string) => {
-    setPassword(text);
-  };
-
-  const handelLogin = () => {
+    const authClient = getAuthService();
     try {
-      login(username, password);
+      setLoading(true);
+      await authClient.register({ email, password });
+      // Auto-login
+      await login(email, password);
     } catch (error) {
-      Alert.alert("Login Failed", (error as Error).message);
+      Alert.alert("Registro fallido", (error as Error).message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handelRegister = () => {
-    router.push("/register" as any);
+  const handleBack = () => {
+    router.back();
   };
 
   return (
@@ -42,20 +47,19 @@ export default function LoginScreen() {
     >
       <View style={styles.borderBlurView}>
         <BlurView intensity={40} tint="dark" style={styles.blurView}>
-          <FontAwesome5 name="user-circle" size={80} style={styles.icon} />
-          <Text style={styles.title}>Login</Text>
-          {/* Username */}
+          <FontAwesome5 name="user-plus" size={80} style={styles.icon} />
+          <Text style={styles.title}>Crear nueva cuenta</Text>
+
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email:</Text>
             <TextInput
               style={styles.input}
               placeholder="Email"
               placeholderTextColor="#ffffff"
-              onChangeText={handelUsernameChange}
+              onChangeText={setEmail}
             />
           </View>
 
-          {/* Password */}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password:</Text>
             <TextInput
@@ -63,27 +67,30 @@ export default function LoginScreen() {
               placeholder="Insert Password"
               placeholderTextColor="#ffffff"
               secureTextEntry
-              onChangeText={handelPasswordChange}
+              onChangeText={setPassword}
             />
           </View>
+
           <Button
             style={styles.button}
-            onPress={handelLogin}
-            disabled={!username || !password}
+            onPress={handleRegister}
+            disabled={!email || !password}
             loading={loading}
-            text="Login"
+            text="Crear cuenta"
           />
+
           <Button
             type="outlined"
             style={[styles.button, { marginTop: 8 }]}
-            onPress={handelRegister}
-            text="Registrar nueva cuenta"
+            onPress={handleBack}
+            text="Volver al Login"
           />
         </BlurView>
       </View>
     </LinearGradient>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -92,7 +99,7 @@ const styles = StyleSheet.create({
   },
   borderBlurView: {
     borderWidth: 1,
-    borderColor: "#0a8d36ff", // blanco con transparencia
+    borderColor: "#0a8d36ff",
     borderRadius: 10,
     overflow: "hidden",
     width: "85%",
@@ -123,7 +130,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   title: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
     color: "#ffffff",
     textAlign: "center",
@@ -134,12 +141,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     width: "80%",
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 18,
   },
   icon: {
     marginBottom: 10,

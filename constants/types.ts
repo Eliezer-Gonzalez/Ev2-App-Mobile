@@ -1,11 +1,11 @@
-export interface Task{
-    id: string;
-    title: string;
-    completed: boolean;
-    userId: string;
-    coordinates?: {
-        latitude: string;
-        longitude: string;
-    };
-    photoUri?: string;
+export interface Task {
+  id: string;
+  title: string;
+  completed: boolean;
+  userId: string;
+  location?: {
+    latitude: number;
+    longitude: number;
+  };
+  photoUri?: string;
 }
